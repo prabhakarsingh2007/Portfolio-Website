@@ -14,6 +14,7 @@ urlpatterns = [
     path('sitemap.xml', sitemap_xml, name='sitemap_xml'),
     path('robots.txt', robots_txt, name='robots_txt'),
     path('sw.js', service_worker, name='service_worker'),
+    path('api/', include('apps.core.api_urls')),
     path('', include('apps.core.urls')),
     path('projects/', include('apps.projects.urls')),
     path('contact/', include('apps.contact.urls')),
