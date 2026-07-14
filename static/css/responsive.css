@@ -1,0 +1,117 @@
+/* responsive.css - Media queries for fluid layouts */
+
+/* LARGE TABLETS & SMALL DESKTOPS */
+@media (max-width: 1024px) {
+    h1 { font-size: 3rem; }
+    .hero-title { font-size: 3rem; }
+    
+    .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+}
+
+/* PORTRAIT TABLETS & MOBILE PHONES */
+@media (max-width: 768px) {
+    h1 { font-size: 2.25rem; }
+    h2 { font-size: 1.75rem; }
+    .hero-title { font-size: 2.5rem; }
+    .hero-description { font-size: 1rem; }
+
+    .navbar {
+        position: relative;
+    }
+
+    /* Mobile burger button toggle display */
+    .menu-toggle {
+        display: flex;
+    }
+
+    /* Mobile overlay navigation links */
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 400px;
+        height: 100vh;
+        background: var(--bg-secondary);
+        border-left: 1px solid var(--border-color);
+        box-shadow: var(--shadow-lg);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 3rem;
+        transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 1005;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .hero {
+        flex-direction: column-reverse;
+        justify-content: center;
+        gap: 3rem;
+        padding-top: calc(var(--nav-height) + 2rem);
+        padding-bottom: 4rem;
+        text-align: center;
+    }
+
+    .hero-image-container {
+        justify-content: center;
+    }
+
+    .profile-glow-ring {
+        width: 280px;
+        height: 280px;
+    }
+
+    .btn-group {
+        justify-content: center;
+    }
+
+    .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .skills-list {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .section {
+        padding: 4.5rem 0;
+    }
+
+    .section-header {
+        margin-bottom: 3rem;
+    }
+}
+
+/* SMALL MOBILE DEVICES */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 1.25rem;
+    }
+    
+    .hero-title {
+        font-size: 2.25rem;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}

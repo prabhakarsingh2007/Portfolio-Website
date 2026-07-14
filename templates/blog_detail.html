@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }} | {{ site_title }}{% endblock %}
+
+{% block meta_description %}{{ post.summary }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Article visual elements */
+    .article-header {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 3rem;
+        padding-top: calc(var(--nav-height) + 3rem);
+    }
+    
+    .article-meta {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+    }
+    
+    .article-title {
+        font-size: 3.25rem;
+        line-height: 1.15;
+        margin-bottom: 1.5rem;
+    }
+    
+    .article-content {
+        max-width: 800px;
+        margin: 0 auto;
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+    
+    .article-content p {
+        color: var(--text-primary);
+        opacity: 0.9;
+        margin-bottom: 2rem;
+    }
+    
+    .article-content h2,
+    .article-content h3 {
+        margin: 3rem 0 1.5rem;
+    }
+    
+    .article-content blockquote {
+        border-left: 4px solid var(--accent-primary);
+        padding-left: 1.5rem;
+        margin: 2rem 0;
+        font-style: italic;
+        color: var(--text-secondary);
+    }
+    
+    .article-content pre {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        padding: 1.5rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-family: var(--code-font);
+        font-size: 0.95rem;
+        margin: 2rem 0;
+    }
+    
+    /* Scroll Progress Bar styling */
+    #reading-progress-container {
+        position: fixed;
+        top: var(--nav-height);
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: transparent;
+        z-index: 1002;
+    }
+    
+    #reading-progress-bar {
+        height: 100%;
+        width: 0%;
+        background: var(--accent-gradient);
+        transition: width 0.1s ease;
+    }
+    
+    .related-title {
+        text-align: center;
+        margin-top: 6rem;
+        margin-bottom: 3rem;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Reading Progress indicator logic
+    window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById('reading-progress-bar').style.width = scrolled + '%';
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Reading Progress Bar -->
+<div id="reading-progress-container">
+    <div id="reading-progress-bar"></div>
+</div>
+
+<article class="section" style="min-height: 100vh;">
+    <!-- HEADER -->
+    <div class="container article-header reveal slide-up">
+        <div class="article-meta">
+            <span>{{ post.published_date|date:"F d, Y" }}</span>
+            <span>•</span>
+            <span>{{ post.reading_time }} min read</span>
+            <span>•</span>
+            <span>{{ post.views }} views</span>
+        </div>
+        <h1 class="article-title">{{ post.title }}</h1>
+        {% if post.category %}
+            <a href="{% url 'blog:list' %}?category={{ post.category.slug }}" class="tag" style="font-size:0.9rem; padding:0.4rem 1rem;">
+                {{ post.category.name }}
+            </a>
+        {% endif %}
+    </div>
+    
+    <!-- FEATURED IMAGE -->
+    {% if post.featured_image %}
+        <div class="container reveal slide-up delay-100" style="max-width: 900px; margin-bottom: 4rem;">
+            <div style="border-radius: 16px; overflow: hidden; border:1px solid var(--border-color); aspect-ratio: 16/9;">
+                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </div>
+    {% endif %}
+    
+    <!-- BODY CONTENT -->
+    <div class="container article-content reveal slide-up delay-200">
+        <div class="glass-card" style="padding: 4rem;">
+            <!-- Render body content safely with linebreaks -->
+            {{ post.body|linebreaks }}
+        </div>
+    </div>
+    
+    <!-- RELATED POSTS -->
+    {% if related_posts %}
+        <div class="container">
+            <h2 class="related-title reveal slide-up">Related Articles</h2>
+            <div class="grid-3">
+                {% for rpost in related_posts %}
+                    <div class="glass-card blog-card reveal slide-up delay-{{ forloop.counter }}00">
+                        <div class="blog-img-wrapper">
+                            {% if rpost.featured_image %}
+                                <img src="{{ rpost.featured_image.url }}" alt="{{ rpost.title }}">
+                            {% else %}
+                                <div style="width:100%; height:100%;" class="shimmer"></div>
+                            {% endif %}
+                        </div>
+                        <div class="blog-info">
+                            <div class="blog-meta">
+                                <span>{{ rpost.published_date|date:"M d, Y" }}</span>
+                                <span>•</span>
+                                <span>{{ rpost.reading_time }} min read</span>
+                            </div>
+                            <h3>{{ rpost.title }}</h3>
+                            <p>{{ rpost.summary|truncatewords:15 }}</p>
+                            <a href="{% url 'blog:detail' rpost.slug %}" class="blog-readmore">
+                                Read Article <span>&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</article>
+{% endblock %}

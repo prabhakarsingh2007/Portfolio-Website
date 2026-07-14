@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Internal Server Error | {{ site_title }}{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: calc(var(--nav-height) + 4rem); min-height: 100vh; display: flex; align-items: center;">
+    <div class="container" style="text-align: center;">
+        <div class="glass-card reveal slide-up" style="max-width: 600px; margin: 0 auto; padding: 4rem;">
+            <span style="font-size: 8rem; font-weight: 800; font-family: var(--code-font);" class="text-gradient">500</span>
+            <h1 style="font-size: 2.25rem; margin-top: 1rem; margin-bottom: 1.5rem;">System Error</h1>
+            <p>Something went wrong on our servers. Rest assured, our mechanical engineers are already investigating.</p>
+            <div style="margin-top: 2.5rem;">
+                <a href="{% url 'core:home' %}" class="btn btn-primary">Return Home</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

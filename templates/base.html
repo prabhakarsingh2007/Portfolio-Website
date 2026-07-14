@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ site_title }}{% endblock %}</title>
+    
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="{% block meta_description %}Welcome to my professional developer portfolio. Browse my projects, skills, education, and latest blog posts.{% endblock %}">
+    
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animation.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- HEADER AND NAVBAR -->
+    <header>
+        <div class="container navbar">
+            <a href="{% url 'core:home' %}" class="logo">
+                <span class="text-gradient">&lt;</span>Antigravity<span class="text-gradient">.dev /&gt;</span>
+            </a>
+            
+            <nav>
+                <ul class="nav-links">
+                    <li>
+                        <a href="{% url 'core:home' %}" class="{% if request.resolver_match.url_name == 'home' and request.resolver_match.namespace == 'core' %}active{% endif %}">Home</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'core:about' %}" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'projects:list' %}" class="{% if request.resolver_match.app_name == 'projects' %}active{% endif %}">Projects</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'blog:list' %}" class="{% if request.resolver_match.app_name == 'blog' %}active{% endif %}">Blog</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'contact:index' %}" class="{% if request.resolver_match.app_name == 'contact' %}active{% endif %}">Contact</a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="btn-control-group">
+                <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">☀️</button>
+                <button id="menu-toggle" class="menu-toggle" aria-label="Toggle Navigation Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN BODY CONTENT -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-socials">
+                <a href="{{ social_github }}" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub">
+                    <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+                <a href="{{ social_linkedin }}" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn">
+                    <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"></path><circle cx="4" cy="4" r="2"></circle></svg>
+                </a>
+                <a href="{{ social_twitter }}" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Twitter">
+                    <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+                </a>
+            </div>
+            <p class="footer-copy">&copy; {{ current_year }} {% if profile %}{{ profile.name }}{% else %}Antigravity{% endif %}. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScripts -->
+    <script src="{% static 'js/theme.js' %}"></script>
+    <script src="{% static 'js/animation.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

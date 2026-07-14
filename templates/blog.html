@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blog | {{ site_title }}{% endblock %}
+
+{% block meta_description %}Read my thoughts on programming, framework architectures, coding tips, and engineering tutorials.{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Blog layout custom styling elements */
+    .blog-layout {
+        display: grid;
+        grid-template-columns: 8fr 4fr;
+        gap: 3rem;
+    }
+    
+    .search-bar {
+        position: relative;
+        margin-bottom: 2rem;
+    }
+    
+    .search-bar svg {
+        position: absolute;
+        right: 1.25rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+    }
+    
+    .sidebar-block {
+        margin-bottom: 2.5rem;
+    }
+    
+    .sidebar-block h3 {
+        font-size: 1.2rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.75rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .category-link {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        transition: var(--transition-smooth);
+    }
+    
+    .category-link:hover,
+    .category-link.active {
+        color: var(--accent-primary);
+        background: rgba(99, 102, 241, 0.05);
+        padding-left: 1rem;
+    }
+    
+    /* Pagination styling */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 4rem;
+    }
+    
+    .page-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        background: var(--card-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        transition: var(--transition-smooth);
+    }
+    
+    .page-btn.active,
+    .page-btn:hover {
+        background: var(--accent-gradient);
+        color: white;
+        border-color: var(--accent-primary);
+    }
+    
+    .page-btn.disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+    
+    .recent-post-item {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+        align-items: center;
+    }
+    
+    .recent-post-thumb {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        flex-shrink: 0;
+    }
+    
+    .recent-post-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .recent-post-info h4 {
+        font-size: 0.95rem;
+        margin-bottom: 0.25rem;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .recent-post-info span {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+    }
+    
+    .blog-card h3 a {
+        transition: var(--transition-smooth);
+    }
+    .blog-card h3 a:hover {
+        color: var(--accent-primary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: calc(var(--nav-height) + 4rem); min-height: 100vh;">
+    <div class="container">
+        <!-- HEADER -->
+        <div class="section-header reveal slide-up">
+            <span class="section-tag">Journal</span>
+            <h2 class="section-title">My Insights</h2>
+            <p>Articles, publications, and thoughts regarding software development, database design, and interface user experience.</p>
+        </div>
+        
+        <!-- MAIN BLOG LAYOUT -->
+        <div class="blog-layout">
+            <!-- POST FEED COLUMN -->
+            <div class="reveal slide-right delay-100">
+                {% if search_query or selected_category or selected_tag %}
+                    <div style="margin-bottom: 2rem; display:flex; justify-content:space-between; align-items:center;">
+                        <p style="margin-bottom: 0;">
+                            Filtering by: 
+                            {% if search_query %}<strong>Search: "{{ search_query }}"</strong>{% endif %}
+                            {% if selected_category %}<strong>Category: "{{ selected_category }}"</strong>{% endif %}
+                            {% if selected_tag %}<strong>Tag: "#{{ selected_tag }}"</strong>{% endif %}
+                        </p>
+                        <a href="{% url 'blog:list' %}" style="font-size:0.9rem; font-weight:600; color:var(--accent-primary);">Clear Filters</a>
+                    </div>
+                {% endif %}
+                
+                <div class="grid-2">
+                    {% for post in posts %}
+                        <div class="glass-card blog-card reveal slide-up delay-{{ forloop.counter }}00">
+                            <a href="{{ post.get_absolute_url }}">
+                                <div class="blog-img-wrapper">
+                                    {% if post.featured_image %}
+                                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+                                    {% else %}
+                                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;" class="shimmer">
+                                            <span>No Image</span>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </a>
+                            <div class="blog-info">
+                                <div class="blog-meta">
+                                    <span>{{ post.published_date|date:"M d, Y" }}</span>
+                                    <span>•</span>
+                                    <span>{{ post.reading_time }} min read</span>
+                                </div>
+                                <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+                                <p>{{ post.summary }}</p>
+                                <a href="{{ post.get_absolute_url }}" class="blog-readmore">
+                                    Read Article <span>&rarr;</span>
+                                </a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="glass-card" style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
+                            <p style="margin-bottom: 0;">No articles match your criteria. Please try another query!</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- PAGINATION CONTROLS -->
+                {% if posts.has_other_pages %}
+                    <div class="pagination reveal slide-up">
+                        {% if posts.has_previous %}
+                            <a href="?page={{ posts.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="page-btn">&larr;</a>
+                        {% else %}
+                            <span class="page-btn disabled">&larr;</span>
+                        {% endif %}
+                        
+                        {% for num in posts.paginator.page_range %}
+                            {% if posts.number == num %}
+                                <span class="page-btn active">{{ num }}</span>
+                            {% else %}
+                                <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="page-btn">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if posts.has_next %}
+                            <a href="?page={{ posts.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="page-btn">&rarr;</a>
+                        {% else %}
+                            <span class="page-btn disabled">&rarr;</span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- SIDEBAR COLUMN -->
+            <div class="reveal slide-left delay-200">
+                <div class="glass-card" style="padding: 2.5rem; position: sticky; top: calc(var(--nav-height) + 2rem);">
+                    <!-- SEARCH WIDGET -->
+                    <div class="sidebar-block">
+                        <h3>Search Articles</h3>
+                        <form action="{% url 'blog:list' %}" method="GET" class="search-bar">
+                            <input type="text" name="q" placeholder="Type keywords..." class="form-input" value="{{ search_query }}">
+                            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </form>
+                    </div>
+                    
+                    <!-- CATEGORIES WIDGET -->
+                    <div class="sidebar-block">
+                        <h3>Categories</h3>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <a href="{% url 'blog:list' %}" class="category-link {% if not selected_category %}active{% endif %}">
+                                <span>All Categories</span>
+                            </a>
+                            {% for cat in categories %}
+                                <a href="?category={{ cat.slug }}" class="category-link {% if selected_category == cat.slug %}active{% endif %}">
+                                    <span>{{ cat.name }}</span>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- RECENT POSTS WIDGET -->
+                    <div class="sidebar-block" style="margin-bottom: 0;">
+                        <h3>Recent Publications</h3>
+                        <div>
+                            {% for rpost in recent_posts %}
+                                <a href="{% url 'blog:detail' rpost.slug %}" class="recent-post-item">
+                                    <div class="recent-post-thumb">
+                                        {% if rpost.featured_image %}
+                                            <img src="{{ rpost.featured_image.url }}" alt="{{ rpost.title }}">
+                                        {% else %}
+                                            <div style="width:100%; height:100%;" class="shimmer"></div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="recent-post-info">
+                                        <h4>{{ rpost.title }}</h4>
+                                        <span>{{ rpost.published_date|date:"d M, Y" }}</span>
+                                    </div>
+                                </a>
+                            {% empty %}
+                                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom:0;">No recent publications.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

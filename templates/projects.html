@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Projects | {{ site_title }}{% endblock %}
+
+{% block meta_description %}Explore my portfolio of web applications, opensource code, and design work. Filter by technology tags.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .project-card h3 a {
+        transition: var(--transition-smooth);
+    }
+    .project-card h3 a:hover {
+        color: var(--accent-primary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: calc(var(--nav-height) + 4rem); min-height: 100vh;">
+    <div class="container">
+        <!-- HEADER -->
+        <div class="section-header reveal slide-up">
+            <span class="section-tag">Portfolio</span>
+            <h2 class="section-title">My Projects</h2>
+            <p>Browse through my professional works, personal side projects, and opensource contributions. Click on the pills to filter by technology.</p>
+        </div>
+        
+        <!-- TAG FILTER PILLS -->
+        {% if all_techs %}
+            <div class="filter-container reveal slide-up delay-100">
+                <button class="filter-pill active" data-filter="all">All Projects</button>
+                {% for tech in all_techs %}
+                    <button class="filter-pill" data-filter="{{ tech }}">{{ tech }}</button>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <!-- PROJECTS GRID -->
+        <div class="grid-3" id="projects-grid">
+            {% for project in projects %}
+                <div class="glass-card project-card reveal slide-up delay-{{ forloop.counter }}00" data-techs="{{ project.technologies }}">
+                    <a href="{{ project.get_absolute_url }}">
+                        <div class="project-img-wrapper">
+                            {% if project.featured_image %}
+                                <img src="{{ project.featured_image.url }}" alt="{{ project.title }}">
+                            {% else %}
+                                <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;" class="shimmer">
+                                    <span>No Image Available</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="project-info">
+                        <div class="project-tags">
+                            {% for tech in project.get_tech_list %}
+                                <span class="tag">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                        <h3><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></h3>
+                        <p>{{ project.summary }}</p>
+                        <div class="project-links">
+                            <a href="{{ project.get_absolute_url }}" class="project-link">
+                                View Details <span>&rarr;</span>
+                            </a>
+                            {% if project.github_url %}
+                                <a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="GitHub link">
+                                    Code
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="glass-card" style="grid-column: 1 / -1; text-align: center; padding: 5rem;">
+                    <p style="margin-bottom: 0;">No projects have been added yet. Please check back later!</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
