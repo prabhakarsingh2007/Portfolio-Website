@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'corsheaders',  # CORS headers support
     # WhiteNoise runserver static support
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Place CorsMiddleware as high as possible
     'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise Middleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -147,3 +149,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CORS Configurations
+CORS_ALLOW_ALL_ORIGINS = True
