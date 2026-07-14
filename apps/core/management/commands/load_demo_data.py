@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.files.base import ContentFile
-from apps.portfolio.models import Profile, Skill, Experience, Education
+from apps.portfolio.models import Profile, Skill, Experience, Education, Certificate, Testimonial
 from apps.projects.models import Project
 from apps.blog.models import Category, Post
 
@@ -198,4 +198,41 @@ class Command(BaseCommand):
         )
 
         self.stdout.write(self.style.SUCCESS('Blog Categories and Posts created.'))
+
+        # 8. Create Certificates
+        Certificate.objects.all().delete()
+        Certificate.objects.create(
+            name="AWS Certified Solutions Architect – Associate",
+            issuing_organization="Amazon Web Services (AWS)",
+            issue_date=timezone.datetime(2025, 4, 15).date(),
+            credential_id="AWS-ASA-998877",
+            credential_url="https://aws.amazon.com/certification/",
+            order=1
+        )
+        Certificate.objects.create(
+            name="Professional Scrum Master I (PSM I)",
+            issuing_organization="Scrum.org",
+            issue_date=timezone.datetime(2024, 11, 20).date(),
+            credential_id="SCRUM-PSM-112233",
+            credential_url="https://www.scrum.org",
+            order=2
+        )
+        self.stdout.write(self.style.SUCCESS('Certificates created.'))
+
+        # 9. Create Testimonials
+        Testimonial.objects.all().delete()
+        Testimonial.objects.create(
+            client_name="Sarah Jenkins",
+            client_title="Director of Engineering at NexTech Solutions",
+            quote="Alexander is an outstanding engineer who consistently delivers reliable and highly optimized software. His expertise in database architecture and Django helped us scale our SaaS product by 300%.",
+            order=1
+        )
+        Testimonial.objects.create(
+            client_name="David Chen",
+            client_title="Product Manager at WebLaunch Tech",
+            quote="Working with Alexander was a pleasure. He has a rare combination of strong system architectural thinking and an eye for premium UI/UX design. Highly recommended!",
+            order=2
+        )
+        self.stdout.write(self.style.SUCCESS('Testimonials created.'))
+
         self.stdout.write(self.style.SUCCESS('Database pre-population completed successfully!'))

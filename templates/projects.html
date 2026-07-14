@@ -26,20 +26,27 @@
             <p>Browse through my professional works, personal side projects, and opensource contributions. Click on the pills to filter by technology.</p>
         </div>
         
-        <!-- TAG FILTER PILLS -->
-        {% if all_techs %}
-            <div class="filter-container reveal slide-up delay-100">
-                <button class="filter-pill active" data-filter="all">All Projects</button>
-                {% for tech in all_techs %}
-                    <button class="filter-pill" data-filter="{{ tech }}">{{ tech }}</button>
-                {% endfor %}
+        <!-- SEARCH AND FILTER CONTAINER -->
+        <div style="margin-bottom: 3rem; display: flex; flex-direction: column; gap: 1.5rem; align-items: center;" class="reveal slide-up delay-100">
+            {% if all_techs %}
+                <div class="filter-container" style="margin-bottom: 0;">
+                    <button class="filter-pill active" data-filter="all">All Projects</button>
+                    {% for tech in all_techs %}
+                        <button class="filter-pill" data-filter="{{ tech }}">{{ tech }}</button>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <div class="search-bar-wrapper" style="position: relative; width: 100%; max-width: 500px;">
+                <input type="text" id="project-search" placeholder="Search projects by name, tags, description..." class="form-input" style="padding-left: 3rem; border-radius: 30px;">
+                <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" height="1.2em" width="1.2em" xmlns="http://www.w3.org/2000/svg" style="position: absolute; left: 1.25rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); pointer-events: none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </div>
-        {% endif %}
+        </div>
         
         <!-- PROJECTS GRID -->
         <div class="grid-3" id="projects-grid">
             {% for project in projects %}
-                <div class="glass-card project-card reveal slide-up delay-{{ forloop.counter }}00" data-techs="{{ project.technologies }}">
+                <div class="glass-card project-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00" data-techs="{{ project.technologies }}" data-title="{{ project.title }}" data-summary="{{ project.summary }}">
                     <a href="{{ project.get_absolute_url }}">
                         <div class="project-img-wrapper">
                             {% if project.featured_image %}

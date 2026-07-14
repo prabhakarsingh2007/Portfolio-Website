@@ -79,3 +79,33 @@ class Education(models.Model):
 
     def __str__(self):
         return f"{self.degree} from {self.school}"
+
+class Certificate(models.Model):
+    name = models.CharField(max_length=150)
+    issuing_organization = models.CharField(max_length=100)
+    issue_date = models.DateField()
+    expiration_date = models.DateField(blank=True, null=True)
+    credential_id = models.CharField(max_length=100, blank=True)
+    credential_url = models.URLField(blank=True)
+    logo = models.ImageField(upload_to='certificates/', blank=True, null=True)
+    order = models.PositiveIntegerField(default=0, help_text="Sort order")
+
+    class Meta:
+        ordering = ['order', '-issue_date']
+
+    def __str__(self):
+        return f"{self.name} - {self.issuing_organization}"
+
+class Testimonial(models.Model):
+    client_name = models.CharField(max_length=100)
+    client_title = models.CharField(max_length=100, help_text="e.g. CEO at Acme Corp")
+    quote = models.TextField()
+    client_avatar = models.ImageField(upload_to='testimonials/', blank=True, null=True)
+    order = models.PositiveIntegerField(default=0, help_text="Sort order")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', '-created_at']
+
+    def __str__(self):
+        return f"Testimonial from {self.client_name}"

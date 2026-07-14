@@ -1,0 +1,23 @@
+{
+  "name": "Antigravity Dev Portfolio",
+  "short_name": "Antigravity",
+  "description": "Premium developer portfolio displaying projects, blogs, experience, and certificates.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a12",
+  "theme_color": "#6366f1",
+  "orientation": "any",
+  "categories": ["portfolio", "developer", "design"],
+  "icons": [
+    {
+      "src": "/static/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

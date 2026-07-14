@@ -176,4 +176,100 @@
         </div>
     </div>
 </section>
+
+<!-- CERTIFICATES SECTION -->
+{% if certificates %}
+<section class="section" style="background: var(--bg-secondary); border-top: 1px solid var(--border-color);">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-tag">Credentials</span>
+            <h2 class="section-title">Licenses & Certifications</h2>
+            <p>A list of academic accomplishments, training, and specialized developer certifications that validate my industry skills.</p>
+        </div>
+        
+        <div class="grid-3">
+            {% for cert in certificates %}
+                <div class="glass-card cert-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00" style="padding: 2rem; display: flex; flex-direction: column; height: 100%;">
+                    <div style="display: flex; gap: 1.5rem; align-items: center; margin-bottom: 1.5rem;">
+                        <div class="cert-icon-wrapper" style="width: 50px; height: 50px; border-radius: 8px; background: rgba(99, 102, 241, 0.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid var(--border-color);">
+                            {% if cert.logo %}
+                                <img src="{{ cert.logo.url }}" alt="{{ cert.issuing_organization }}" style="width: 32px; height: 32px; object-fit: contain;">
+                            {% else %}
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--accent-primary)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            {% endif %}
+                        </div>
+                        <div style="flex-grow:1;">
+                            <h4 style="margin: 0; font-size: 1.1rem; line-height: 1.3;">{{ cert.name }}</h4>
+                            <span style="font-size: 0.85rem; color: var(--text-secondary);">{{ cert.issuing_organization }}</span>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem; margin-top: auto;">
+                        <div>Issued: {{ cert.issue_date|date:"F Y" }}</div>
+                        {% if cert.credential_id %}
+                            <div style="font-family: var(--code-font); font-size: 0.8rem; margin-top: 0.25rem; opacity: 0.8;">ID: {{ cert.credential_id }}</div>
+                        {% endif %}
+                    </div>
+                    {% if cert.credential_url %}
+                        <a href="{{ cert.credential_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.5rem; text-align: center; width: 100%;">Verify Credential</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- GITHUB CONTRIBUTIONS SECTION -->
+<section class="section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-tag">Contributions</span>
+            <h2 class="section-title">GitHub Activity</h2>
+            <p>Live overview of my repository creations, forks, stars, and open source development commits direct from GitHub.</p>
+        </div>
+        
+        <div class="glass-card github-card" data-aos="zoom-in" style="padding: 3rem; display: flex; flex-direction: column; gap: 2rem;">
+            <div id="github-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 1.5rem;">
+                    <div class="github-avatar-glow" style="position: relative;">
+                        <img id="github-user-avatar" src="" alt="GitHub Avatar" style="width: 70px; height: 70px; border-radius: 50%; display: none; border: 2px solid var(--accent-primary);">
+                        <div id="github-avatar-fallback" style="width: 70px; height: 70px; border-radius: 50%; background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.5rem;">GH</div>
+                    </div>
+                    <div>
+                        <h3 id="github-user-name" style="margin: 0; font-size: 1.4rem;">Loading profile...</h3>
+                        <p id="github-user-bio" style="margin: 0.25rem 0 0 0; font-size: 0.95rem; color: var(--text-secondary);"></p>
+                    </div>
+                </div>
+                <a id="github-profile-link" href="{{ social_github }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.9rem; padding: 0.6rem 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" height="1.2em" width="1.2em" xmlns="http://www.w3.org/2000/svg"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                    Follow on GitHub
+                </a>
+            </div>
+            
+            <div id="github-stats-grid" class="grid-3" style="border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 2rem 0;">
+                <div style="text-align: center;">
+                    <h4 style="font-size: 2.2rem; font-weight: 700; color: var(--text-primary);" id="github-repos-count">-</h4>
+                    <span style="font-size: 0.9rem; color: var(--text-secondary);">Public Repositories</span>
+                </div>
+                <div style="text-align: center;">
+                    <h4 style="font-size: 2.2rem; font-weight: 700; color: var(--text-primary);" id="github-followers-count">-</h4>
+                    <span style="font-size: 0.9rem; color: var(--text-secondary);">Followers</span>
+                </div>
+                <div style="text-align: center;">
+                    <h4 style="font-size: 2.2rem; font-weight: 700; color: var(--text-primary);" id="github-gists-count">-</h4>
+                    <span style="font-size: 0.9rem; color: var(--text-secondary);">Public Gists</span>
+                </div>
+            </div>
+            
+            <div>
+                <h4 style="font-size: 1.1rem; margin-bottom: 1.5rem;">Popular Repositories</h4>
+                <div id="github-repos-grid" class="grid-2" style="gap: 1.5rem;">
+                    <!-- Loading placeholders -->
+                    <div class="glass-card shimmer" style="height: 100px; border-radius: 8px;"></div>
+                    <div class="glass-card shimmer" style="height: 100px; border-radius: 8px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

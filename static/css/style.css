@@ -850,3 +850,252 @@ footer {
     vertical-align: middle;
     margin-left: 5px;
 }
+
+/* PRELOADER */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-primary);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+#preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.loader-content {
+    text-align: center;
+}
+.logo-spinner {
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgba(99, 102, 241, 0.1);
+    border-top: 3px solid var(--accent-primary);
+    border-radius: 50%;
+    animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    margin: 0 auto 1.5rem auto;
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+.loader-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-family: var(--code-font);
+}
+
+/* SCROLL PROGRESS INDICATOR */
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: var(--accent-gradient);
+    width: 0%;
+    z-index: 1001;
+    box-shadow: 0 2px 10px var(--accent-glow);
+    transition: width 0.1s ease-out;
+}
+
+/* SCROLL TO TOP */
+.scroll-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: var(--transition-smooth);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+.scroll-btn.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.scroll-btn:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    box-shadow: 0 0 15px var(--accent-glow);
+    transform: translateY(-5px);
+}
+
+/* STICKY NAVBAR ACTIVE STYLING */
+header.scrolled {
+    height: 70px;
+    background: rgba(10, 10, 18, 0.85);
+    box-shadow: var(--shadow-md);
+}
+:root.light-mode header.scrolled {
+    background: rgba(244, 246, 250, 0.85);
+}
+
+/* GRID & COUNTERS */
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    width: 100%;
+}
+.counter-card {
+    padding: 2.5rem 1.5rem;
+    transition: var(--transition-smooth);
+}
+.counter-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 10px 30px var(--accent-glow);
+}
+.counter-number {
+    font-size: 3rem;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+.counter-label {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+/* TESTIMONIALS SLIDER */
+.testimonials-slider {
+    padding: 1rem 0;
+}
+.testimonial-slide {
+    transition: opacity 0.5s ease;
+}
+.slider-btn {
+    transition: var(--transition-smooth);
+}
+.slider-btn:hover {
+    background: var(--accent-gradient) !important;
+    color: white !important;
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+/* CERTIFICATE CARD STYLE */
+.cert-card {
+    transition: var(--transition-smooth);
+    border: 1px solid var(--border-color);
+}
+.cert-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 10px 30px var(--accent-glow);
+}
+.cert-icon-wrapper {
+    transition: var(--transition-smooth);
+}
+.cert-card:hover .cert-icon-wrapper {
+    background: rgba(99, 102, 241, 0.1) !important;
+    transform: scale(1.05);
+}
+
+/* GITHUB CARD */
+.github-card {
+    border: 1px solid var(--border-color);
+    transition: var(--transition-smooth);
+}
+.github-avatar-glow::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--accent-glow);
+    z-index: -1;
+}
+#github-repos-grid {
+    margin-top: 1rem;
+}
+.github-repo-card {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.github-repo-card:hover {
+    background: rgba(99, 102, 241, 0.03);
+    border-color: var(--accent-primary);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm);
+}
+.github-repo-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.github-repo-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.25rem;
+    flex-grow: 1;
+}
+.github-repo-meta {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+.github-repo-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* SHIMMER EFFECT FOR PLACEHOLDERS */
+.shimmer {
+    background: linear-gradient(90deg, var(--card-bg) 25%, var(--border-color) 50%, var(--card-bg) 75%);
+    background-size: 200% 100%;
+    animation: loading-shimmer 1.5s infinite;
+}
+@keyframes loading-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ACCESSIBILITY OUTLINE */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 4px;
+}

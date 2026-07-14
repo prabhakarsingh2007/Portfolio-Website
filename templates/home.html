@@ -18,8 +18,9 @@
 
 {% block content %}
 <!-- HERO SECTION -->
-<section class="container hero">
-    <div class="hero-content reveal slide-up">
+<section class="container hero" style="position: relative;">
+    <canvas id="hero-canvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none;"></canvas>
+    <div class="hero-content reveal" data-aos="fade-up">
         <span class="hero-subtitle text-gradient">Hello, I am</span>
         <h1 class="hero-title">{% if profile %}{{ profile.name }}{% else %}Alexander Wright{% endif %}</h1>
         <h2 class="typing-container" style="font-size: 2rem; min-height: 50px; font-family: var(--code-font); font-weight: 600;">
@@ -65,7 +66,7 @@
 <!-- FEATURED PROJECTS SECTION -->
 <section id="featured-projects" class="section">
     <div class="container">
-        <div class="section-header reveal slide-up">
+        <div class="section-header" data-aos="fade-up">
             <span class="section-tag">Showcase</span>
             <h2 class="section-title">Featured Projects</h2>
             <p>A handpicked selection of application builds that showcase my technical capabilities and architectural style.</p>
@@ -73,7 +74,7 @@
         
         <div class="grid-3">
             {% for project in featured_projects %}
-                <div class="glass-card project-card reveal slide-up delay-{{ forloop.counter }}00">
+                <div class="glass-card project-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00">
                     <a href="{{ project.get_absolute_url }}">
                         <div class="project-img-wrapper">
                             {% if project.featured_image %}
@@ -120,8 +121,32 @@
     </div>
 </section>
 
+<!-- COUNTERS SECTION -->
+<section class="section" style="background: var(--bg-secondary); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+        <div class="grid-4" style="text-align: center;">
+            <div class="counter-card glass-card" data-aos="fade-up">
+                <h3 class="counter-number"><span class="count-value" data-target="5">0</span>+</h3>
+                <p class="counter-label">Years of Experience</p>
+            </div>
+            <div class="counter-card glass-card" data-aos="fade-up" data-aos-delay="100">
+                <h3 class="counter-number"><span class="count-value" data-target="25">0</span>+</h3>
+                <p class="counter-label">Completed Projects</p>
+            </div>
+            <div class="counter-card glass-card" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="counter-number"><span class="count-value" data-target="15">0</span>+</h3>
+                <p class="counter-label">Open Source Repos</p>
+            </div>
+            <div class="counter-card glass-card" data-aos="fade-up" data-aos-delay="300">
+                <h3 class="counter-number"><span class="count-value" data-target="500">0</span>k+</h3>
+                <p class="counter-label">Lines of Code Written</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- QUICK SKILLS SUMMARY -->
-<section class="section" style="background: var(--bg-secondary);">
+<section class="section">
     <div class="container">
         <div class="section-header reveal slide-up">
             <span class="section-tag">Expertise</span>
@@ -215,10 +240,52 @@
         </div>
         
         {% if latest_posts %}
-            <div style="text-align: center; margin-top: 4rem;" class="reveal slide-up">
+            <div style="text-align: center; margin-top: 4rem;" data-aos="fade-up">
                 <a href="{% url 'blog:list' %}" class="btn btn-secondary">View All Articles</a>
             </div>
         {% endif %}
     </div>
 </section>
+
+<!-- TESTIMONIALS SECTION -->
+{% if testimonials %}
+<section class="section" style="background: var(--bg-secondary); border-top: 1px solid var(--border-color); overflow: hidden;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-tag">Recommendations</span>
+            <h2 class="section-title">Client Feedback</h2>
+            <p>Here is what some of the industry professionals and clients I have worked with say about my technical expertise and collaboration.</p>
+        </div>
+        
+        <div class="testimonials-slider" data-aos="zoom-in" style="max-width: 800px; margin: 0 auto; overflow: hidden; position: relative;">
+            <div class="testimonial-track" style="display: flex; transition: var(--transition-smooth); width: 100%;">
+                {% for test in testimonials %}
+                    <div class="testimonial-slide" style="flex: 0 0 100%; width: 100%; text-align: center; padding: 2rem;">
+                        <p class="testimonial-quote" style="font-size: 1.25rem; font-style: italic; line-height: 1.8; color: var(--text-primary); margin-bottom: 2rem;">"{{ test.quote }}"</p>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
+                            {% if test.client_avatar %}
+                                <img src="{{ test.client_avatar.url }}" alt="{{ test.client_name }}" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-primary);">
+                            {% else %}
+                                <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; flex-shrink: 0;">
+                                    {{ test.client_name|slice:":1" }}
+                                </div>
+                            {% endif %}
+                            <div style="text-align: left;">
+                                <h4 style="margin: 0; font-size: 1rem; color: var(--text-primary);">{{ test.client_name }}</h4>
+                                <span style="font-size: 0.85rem; color: var(--text-secondary);">{{ test.client_title }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <!-- CONTROLS -->
+            <div class="testimonial-controls" style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem;">
+                <button class="slider-btn prev-btn" aria-label="Previous testimonial" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-primary); cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; font-weight:bold;">&larr;</button>
+                <button class="slider-btn next-btn" aria-label="Next testimonial" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-primary); cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; font-weight:bold;">&rarr;</button>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
 {% endblock %}
